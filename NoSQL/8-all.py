@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Function that lists all documents in a collection"""
-from pymongo import MongoClient
+import pymongo
 
 
 def list_all(mongo_collection):
