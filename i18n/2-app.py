@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Route module for the API - Get locale from request"""
+""" Route module for the API - Get locale from request """
 
 
 from flask import Flask, request, render_template
