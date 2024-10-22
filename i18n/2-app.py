@@ -17,7 +17,9 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-app.config.from_object('2-app.Config')
+app = Flask(__name__)
+babel = Babel(app)
+app.config.from_object(Config)
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
