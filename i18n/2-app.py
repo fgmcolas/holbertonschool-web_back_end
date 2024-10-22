@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """ Route module for the API - Get locale from request"""
-
-
 from flask import Flask, request, render_template
 from flask_babel import Babel
 from os import getenv
+
 
 app = Flask(__name__)
 babel = Babel(app)
