@@ -29,7 +29,6 @@ def index() -> str:
 @babel.localeselector
 def get_locale() -> str:
     """ Determines best match for supported languages """
-    # check if there is a locale parameter/query string
     if request.args.get('locale'):
         locale = request.args.get('locale')
         if locale in app.config['LANGUAGES']:
