@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Route module for the API - Infer appropriate time zone"""
+""" Route module for the API - Infer appropriate time zone """
 
 
 from flask import Flask, request, render_template, g
