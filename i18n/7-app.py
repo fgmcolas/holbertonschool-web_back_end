@@ -23,12 +23,10 @@ babel = Babel(app)
 class Config(object):
     """ Babel configuration """
     LANGUAGES = ['en', 'fr']
-    # these are the inherent defaults just btw
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-# set the above class object as the configuration for the app
 app.config.from_object('6-app.Config')
 
 
@@ -43,16 +41,13 @@ def index() -> str:
 @babel.localeselector
 def get_locale() -> Optional[str]:
     """ Determines best match for supported languages """
-    # check if there is a locale parameter/query string
     if request.args.get('locale'):
         locale = request.args.get('locale')
         if locale in app.config['LANGUAGES']:
             return locale
-    # check if there is a locale in an existing user's profile
     elif g.user and g.user.get('locale')\
             and g.user.get('locale') in app.config['LANGUAGES']:
         return g.user.get('locale')
-    # default to return as a failsafe
     else:
         return request.accept_languages.best_match(app.config['LANGUAGES'])
 
@@ -60,7 +55,6 @@ def get_locale() -> Optional[str]:
 def get_user() -> Union[dict, None]:
     """ Returns user dict if ID can be found """
     if request.args.get('login_as'):
-        # have to type cast  the param to be able to search the user dict
         user = int(request.args.get('login_as'))
         if user in users:
             return users.get(user)
@@ -77,20 +71,17 @@ def before_request() -> None:
 @babel.timezoneselector
 def get_timezone() -> Optional[str]:
     """ Determines best match for supported timezones """
-    # check if there is a timezone parameter/query string
     if request.args.get('timezone'):
         timezone = request.args.get('timezone')
         try:
             return timezone(timezone).zone
         except pytz.exceptions.UnknownTimeZoneError:
             return None
-    # check if there is a timezone in an existing user's profile
     elif g.user and g.user.get('timezone'):
         try:
             return timezone(g.user.get('timezone')).zone
         except pytz.exceptions.UnknownTimeZoneError:
             return None
-    # default to return as a failsafe
     else:
         return request.accept_languages.best_match(app.config['LANGUAGES'])
 
