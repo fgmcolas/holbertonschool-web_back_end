@@ -1,14 +1,14 @@
 # French translations for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2024 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-06 14:21+0100\n"
-"PO-Revision-Date: 2021-01-06 14:23+0100\n"
+"POT-Creation-Date: 2024-10-22 04:26+0200\n"
+"PO-Revision-Date: 2024-10-22 04:28+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -18,18 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#
+#: templates/3-index.html:9 templates/4-index.html:9 templates/5-index.html:9
+#: templates/6-index.html:9 templates/7-index.html:10
 msgid "home_title"
 msgstr "Bienvenue chez Holberton"
-#
+
+#: templates/3-index.html:15 templates/4-index.html:15
+#: templates/5-index.html:15 templates/6-index.html:15
+#: templates/7-index.html:16
 msgid "home_header"
 msgstr "Bonjour monde!"
-#
+
+#: templates/5-index.html:17 templates/6-index.html:17
+#: templates/7-index.html:18
 msgid "logged_in_as"
 msgstr "Vous êtes connecté en tant que %(username)s."
-#
+
+#: templates/5-index.html:19 templates/6-index.html:19
+#: templates/7-index.html:20
 msgid "not_logged_in"
 msgstr "Vous n'êtes pas connecté."
-#
-msgid "current_time_is"
-msgstr "Nous sommes le %(current_time)s."
+
