@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Route module for the API - Get locale from request """
+""" Route module for the API - Get locale from request"""
 
 
 from flask import Flask, request, render_template
@@ -17,9 +17,7 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-app = Flask(__name__)
-babel = Babel(app)
-app.config.from_object(Config)
+app.config.from_object('2-app.Config')
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
