@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Route module for the API - Use user locale"""
+""" Route module for the API - Use user locale """
 
 
 from flask import Flask, request, render_template, g
