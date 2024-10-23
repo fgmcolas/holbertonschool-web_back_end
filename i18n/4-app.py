@@ -32,9 +32,9 @@ babel.init_app(app, locale_selector=get_locale)
 @app.route('/')
 def index():
     """ GET /
-    Return: 2-index.html
+    Return: 4-index.html
     """
-    return render_template('2-index.html')
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
