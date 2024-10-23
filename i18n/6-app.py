@@ -64,9 +64,9 @@ babel.init_app(app, locale_selector=get_locale)
 @app.route('/')
 def index():
     """ GET /
-    Return: 5-index.html
+    Return: 6-index.html
     """
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 if __name__ == "__main__":
