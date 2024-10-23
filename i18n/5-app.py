@@ -37,7 +37,9 @@ def get_locale():
 
 
 def get_user():
-    """ Returns a user dictionary or None if the ID cannot be found or if login_as was not passed. """
+    """ Returns a user dictionary or None if the ID
+    cannot be found or if login_as was not passed.
+    """
     user_id = request.args.get('login_as')
     if user_id is not None:
         user_id = int(user_id)
