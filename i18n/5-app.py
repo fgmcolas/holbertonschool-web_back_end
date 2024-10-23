@@ -18,52 +18,49 @@ app = Flask(__name__)
 babel = Babel(app)
 
 
-class Config(object):
+class Config:
     """ Setup - Babel configuration """
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-app.config.from_object('5-app.Config')
+app.config.from_object(Config)
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
-def index() -> str:
-    """ GET /
-    Return: 4-index.html
-    """
-    return render_template('5-index.html')
-
-
-@babel.localeselector
-def get_locale() -> str:
+def get_locale():
     """ Determines best match for supported languages """
-    if request.args.get('locale'):
-        locale = request.args.get('locale')
-        if locale in app.config['LANGUAGES']:
-            return locale
-    else:
-        return request.accept_languages.best_match(app.config['LANGUAGES'])
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-def get_user() -> Union[dict, None]:
-    """ Returns user dict if ID can be found """
-    if request.args.get('login_as'):
-        user = int(request.args.get('login_as'))
-        if user in users:
-            return users.get(user)
-    else:
-        return None
+def get_user():
+    """ Returns a user dictionary or None if the ID cannot be found or if login_as was not passed. """
+    user_id = request.args.get('login_as')
+    if user_id is not None:
+        user_id = int(user_id)
+        return users.get(user_id)
+    return None
 
 
 @app.before_request
 def before_request():
-    """ Finds user and sets as global on flask.g.user """
+    """ Set user globally before each request """
     g.user = get_user()
 
 
+babel.init_app(app, locale_selector=get_locale)
+
+
+@app.route('/')
+def index():
+    """ GET /
+    Return: 5-index.html
+    """
+    return render_template('5-index.html')
+
+
 if __name__ == "__main__":
-    host = getenv("API_HOST", "0.0.0.0")
-    port = getenv("API_PORT", "5000")
-    app.run(host=host, port=port)
+    app.run()
