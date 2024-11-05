@@ -64,18 +64,18 @@ class Cache:
 
     def get(
         self, key: str, fn: Optional[Callable] = None
-    ) -> Union[str, bytes, int, float, None]:
+    ) -> Union[str, bytes, int, float]:
         """ Retrieve data from Redis
         and optionally apply a conversion function """
         data = self._redis.get(key)
-        if data is not None and fn:
+        if data is not fn:
             return fn(data)
         return data
 
     def get_str(self, key: str) -> Optional[str]:
         """ Get data as a string """
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
+        return self._redis.get(key, int).decode("utf-8")
 
     def get_int(self, key: str) -> Optional[int]:
         """ Get data as an integer """
-        return self.get(key, fn=int)
+        return self.get(key, int)
