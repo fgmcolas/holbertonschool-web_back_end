@@ -31,7 +31,7 @@ def call_history(method: Callable) -> Callable:
 
 def replay(method: Callable):
     """ Display the history of calls of a particular function """
-    input_key = method.__qualname__ = ":inputs"
+    input_key = method.__qualname__ + ":inputs"
     output_key = method.__qualname__ + ":outputs"
     redis_instance = method.__self__._redis
 
@@ -43,8 +43,8 @@ def replay(method: Callable):
     outputs = redis_instance.lrange(output_key, 0, -1)
 
     for input_args, output in zip(inputs, outputs):
-        print(f"{method.__qualname__}(*{input_args.decode("utf-8")}) -> "
-              f"{output.decode("utf-8")}")
+        print(f"{method.__qualname__}(*{input_args.decode('utf-8')}) -> "
+              f"{output.decode('utf-8')}")
 
 
 class Cache:
@@ -67,7 +67,7 @@ class Cache:
     ) -> Union[str, bytes, int, float, None]:
         """ Retrieve data from Redis
         and optionally apply a conversion function """
-        data = self.redis.get(key)
+        data = self._redis.get(key)
         if data is not None and fn:
             return fn(data)
         return data
