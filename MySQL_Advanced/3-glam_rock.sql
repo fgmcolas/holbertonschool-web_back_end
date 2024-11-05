@@ -1,4 +1,4 @@
--- Task: 3. Old school band - inserts rows into the `users` table with the `age` column set to a value under 21
+-- Task: 3. Old school bandlists - all bands with Glam as their main style
 -- Script can be executed on any database
 SELECT DISTINCT `band_name`,
                 IFNULL(`split`, 2020) - `formed` as `lifespan`
