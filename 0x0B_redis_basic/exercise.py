@@ -47,7 +47,8 @@ def replay(method: Callable):
               f"{output.decode('utf-8')}")
 
 
-class Cache:
+
+class Cache():
     def __init__(self):
         """ Initialize the Cache with a Redis client and flush the database """
         self._redis = redis.Redis()
@@ -58,25 +59,19 @@ class Cache:
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ Store data in Redis with a random key
         and return the key as string """
-        key = str(uuid.uuid4())
-        self._redis.set(key, data)
-        return key
+        gen = str(uuid.uuid4())
+        self._redis.set(gen, data)
+        return gen
 
-    def get(
-        self, key: str, fn: Optional[Callable] = None
-    ) -> Union[str, bytes, int, float]:
-        """ Retrieve data from Redis
-        and optionally apply a conversion function """
-        data = self._redis.get(key)
-        if data is not fn:
-            return fn(data)
-        return data
-
-    def get_str(self, key):
+    def get(self, key: str,
+            fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
         """ Get data as a string """
-        data = self._redis.get(key)
-        return data.decode("utf-8")
+        value = self._redis.get(key)
+        return value if not fn else fn(value)
 
     def get_int(self, key):
-        """ Get data as an integer """
         return self.get(key, int)
+
+    def get_str(self, key):
+        value = self._redis.get(key)
+        return value.decode("utf-8")
