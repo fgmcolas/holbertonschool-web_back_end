@@ -9,10 +9,10 @@ from functools import wraps
 def count_calls(method: Callable) -> Callable:
     """ Decorator that counts the number of times a function is called """
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwds):
         key = method.__qualname__
         self._redis_incr(key)
-        return method(self, *args, **kwargs)
+        return method(self, *args, **kwds)
     return wrapper
 
 
