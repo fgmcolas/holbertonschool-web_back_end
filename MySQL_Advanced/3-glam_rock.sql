@@ -1,6 +1,4 @@
--- Task 3: Old school bandlists - all bands with Glam as their main style
--- ranked by their longevity
-SELECT DISTINCT `band_name`,
-                IFNULL(`split`, 2020) - `formed` as `lifespan`
-    FROM `metal_bands` WHERE FIND_IN_SET('Glam rock', style)
-    ORDER BY `lifespan` DESC;
+-- Task: 3. Old school bandlists - all bands with Glam as their main style
+-- Script can be executed on any database
+SELECT band_name, COALESCE(split, 2020) - formed as lifespan FROM metal_bands
+WHERE style LIKE '%Glam rock%' ;
