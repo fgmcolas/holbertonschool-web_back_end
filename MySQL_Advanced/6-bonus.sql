@@ -1,3 +1,5 @@
+-- Task: 6. Best friends forever - creates a new `friends` table with columns `user_id` and `friend_id` to define relationships between users
+-- Script can be executed on any database
 DELIMITER //
 CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(255), IN score INT)
 BEGIN

@@ -1,3 +1,5 @@
+-- Task: 4. Add user privileges - grants `INSERT` privileges to a user on a specific database
+-- Script can be executed on any MySQL server with appropriate privileges
 CREATE TRIGGER decrease_quantity AFTER INSERT ON orders
 FOR EACH ROW UPDATE items
 UPDATE items SET quantity = quantity - NEW.number

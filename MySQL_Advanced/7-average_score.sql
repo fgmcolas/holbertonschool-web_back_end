@@ -1,3 +1,5 @@
+-- Task: 7. Search and score - adds an index `idx_score` on the `score` column of the `students` table to optimize search performance
+-- Script can be executed on any database
 DELIMITER //
 CREATE PROCEDURE ComputeAverageScoreForUser(IN user_id INT)
 BEGIN
