@@ -76,8 +76,13 @@ class Cache():
         value = self._redis.get(key)
         return value if not fn else fn(value)
 
-    def get_int(self, key):
-        return self.get(key, int)
+    def get_int(self, key: str) -> int:
+        value = self._redis.get(key)
+        try:
+            value = int(value.decode("utf-8"))
+        except Exception:
+            value = 0
+        return value
 
     def get_str(self, key):
         value = self._redis.get(key)
