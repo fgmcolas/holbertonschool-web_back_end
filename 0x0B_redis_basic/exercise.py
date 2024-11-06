@@ -36,23 +36,18 @@ def replay(fn: Callable):
     redis_instance = redis.Redis()
     function_name = fn.__qualname__
     call_count = redis_instance.get(function_name)
-    try:
-        call_count = call_count.decode('utf-8')
-    except Exception:
+    if call_count is None:
         call_count = 0
+    else:
+        call_count = int(call_count.decode('utf-8'))
     print(f'{function_name} was called {call_count} times:')
     inputs = redis_instance.lrange(function_name + ":inputs", 0, -1)
     outputs = redis_instance.lrange(function_name + ":outputs", 0, -1)
     for input_value, output_value in zip(inputs, outputs):
-        try:
-            input_value = input_value.decode('utf-8')
-        except Exception:
-            input_value = ""
-        try:
-            output_value = output_value.decode('utf-8')
-        except Exception:
-            output_value = ""
+        input_value = input_value.decode('utf-8')
+        output_value = output_value.decode('utf-8')
         print(f'{function_name}(*{input_value}) -> {output_value}')
+
 
 
 class Cache():
