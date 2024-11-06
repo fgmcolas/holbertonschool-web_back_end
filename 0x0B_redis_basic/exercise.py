@@ -37,7 +37,7 @@ def replay(func: Callable):
     key = func.__qualname__
     input_key = redis_instance.lrange("{}:inputs".format(key), 0, -1)
     output_key = redis_instance.lrange("{}:outputs".format(key), 0, -1)
-    calls_number = len(key)
+    calls_number = len(input_key)
     times_str = 'times'
     if calls_number == 1:
         times_str = 'time'
