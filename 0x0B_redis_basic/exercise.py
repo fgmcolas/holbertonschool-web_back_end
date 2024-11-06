@@ -40,8 +40,8 @@ def replay(fn: Callable):
         call_count = call_count.decode('utf-8')
     except Exception:
         call_count = 0
-    times = "times:"
-    print(f'{function_name} was called {call_count} {times}')
+    time_str = "time:" if call_count == 1 else "times:"
+    print(f'{function_name} was called {call_count} {time_str}')
     inputs = redis_instance.lrange(function_name + ":inputs", 0, -1)
     outputs = redis_instance.lrange(function_name + ":outputs", 0, -1)
     for input_value, output_value in zip(inputs, outputs):
