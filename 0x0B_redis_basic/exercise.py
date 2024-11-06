@@ -35,21 +35,16 @@ def replay(func: Callable):
     """ Display the history of calls of a particular function """
     redis_instance = redis.Redis()
     key = func.__qualname__
-    input_key = redis_instance.lrange("{}:inputs".format(key), 0, -1)
-    output_key = redis_instance.lrange("{}:outputs".format(key), 0, -1)
-    calls_number = len(input_key)
-    times_str = 'times'
-    if calls_number == 1:
-        times_str = 'time'
-    output = "{} was called {} {}:".format(key, calls_number, times_str)
-    print(output)
-    for input_data, output_data in zip(input_key, output_key):
-        output = "{}(*{}) -> {}".format(
-            key,
-            input_data.decode('utf-8'),
-            output_data.decode('utf-8')
-        )
-        print(output)
+    input_key = "{}:inputs".format(key)
+    output_key = "{}:outputs".format(key)
+    inputs = redis_instance.lrange(input_key, 0, -1)
+    outputs = redis_instance.lrange(output_key, 0, -1)
+    calls_number = len(inputs)
+    times_str = 'times' if calls_number != 1 else 'time'
+    print(f"{key} was called {calls_number} {times_str}: ")
+    for input_data, output_data in zip(inputs, outputs):
+        print(f"{key}(*{input_data.decode('utf-8')}) -> "
+              f"{output_data.decode('utf-8')}")
 
 
 class Cache():
