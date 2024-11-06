@@ -33,27 +33,18 @@ def call_history(method: Callable) -> Callable:
 
 def replay(fn: Callable):
     """ Display the history of calls of a particular function """
-    redis_instance = redis.Redis()
+    redis_instance = fn.__self__._redis
     function_name = fn.__qualname__
     call_count = redis_instance.get(function_name)
-    try:
-        call_count = call_count.decode('utf-8')
-    except Exception:
-        call_count = 0
+    call_count = int(call_count.decode('utf-8')) if call_count else 0
     print(f'{function_name} was called {call_count} times:')
-    inputs = redis_instance.lrange(function_name + ":inputs", 0, -1)
-    outputs = redis_instance.lrange(function_name + ":outputs", 0, -1)
-    for input_value, output_value in zip(inputs, outputs):
-        try:
-            input_value = input_value.decode('utf-8')
-        except Exception:
-            input_value = ""
-        try:
-            output_value = output_value.decode('utf-8')
-        except Exception:
-            output_value = ""
-        print(f'{function_name}(*{input_value}) -> {output_value}')
 
+    inputs = redis_instance.lrange(f"{function_name}:inputs", 0, -1)
+    outputs = redis_instance.lrange(f"{function_name}:outputs", 0, -1)
+    for input_value, output_value in zip(inputs, outputs):
+        input_value = input_value.decode('utf-8')
+        output_value = output_value.decode('utf-8')
+        print(f'{function_name}(*{input_value}) -> {output_value}')
 
 class Cache():
     def __init__(self):
@@ -64,26 +55,21 @@ class Cache():
     @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        """ Store data in Redis with a random key
-        and return the key as string """
         gen = str(uuid.uuid4())
         self._redis.set(gen, data)
         return gen
 
-    def get(self, key: str,
-            fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
-        """ Get data as a string """
+    def get(self, key: str, fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
         value = self._redis.get(key)
         return value if not fn else fn(value)
 
     def get_int(self, key: str) -> int:
         value = self._redis.get(key)
         try:
-            value = int(value.decode("utf-8"))
-        except Exception:
-            value = 0
-        return value
+            return int(value.decode("utf-8")) if value else 0
+        except (AttributeError, ValueError):
+            return 0
 
-    def get_str(self, key):
+    def get_str(self, key: str) -> str:
         value = self._redis.get(key)
-        return value.decode("utf-8")
+        return value.decode("utf-8") if value else ""
