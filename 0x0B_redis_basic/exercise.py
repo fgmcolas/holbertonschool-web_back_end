@@ -38,10 +38,7 @@ def replay(func: Callable):
     input_key = redis_instance.lrange("{}:inputs".format(key), 0, -1)
     output_key = redis_instance.lrange("{}:outputs".format(key), 0, -1)
     calls_number = len(input_key)
-    times_str = 'times'
-    if calls_number == 1:
-        times_str = 'time'
-    output = '{} was called {} {}:'.format(key, calls_number, times_str)
+    output = '{} was called {} times:'.format(key, calls_number)
     print(output)
     for input_data, output_data in zip(input_key, output_key):
         output = '{}(*{}) -> {}'.format(
