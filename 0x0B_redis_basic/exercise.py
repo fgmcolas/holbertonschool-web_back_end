@@ -46,8 +46,8 @@ def replay(func: Callable):
     for input_data, output_data in zip(input_key, output_key):
         output = "{}(*{}) -> {}".format(
             key,
-            input_data('utf-8'),
-            output_data('utf-8')
+            input_data.decode('utf-8'),
+            output_data.decode('utf-8')
         )
         print(output)
 
