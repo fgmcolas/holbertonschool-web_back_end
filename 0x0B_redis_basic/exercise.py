@@ -58,6 +58,7 @@ def replay(fn: Callable):
 
 class Cache():
     """ Cache class for storing and retrieving data in Redis. """
+
     def __init__(self):
         """ Initialize the Cache with a Redis client and flush the database """
         self._redis = redis.Redis()
@@ -79,6 +80,7 @@ class Cache():
         return value if not fn else fn(value)
 
     def get_int(self, key: str) -> int:
+        """ Retrieve data as an integer """
         value = self._redis.get(key)
         try:
             value = int(value.decode("utf-8"))
@@ -87,5 +89,6 @@ class Cache():
         return value
 
     def get_str(self, key):
+        """ Retrieve data as string """
         value = self._redis.get(key)
         return value.decode("utf-8")
