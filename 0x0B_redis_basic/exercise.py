@@ -19,33 +19,37 @@ def count_calls(method: Callable) -> Callable:
 def call_history(method: Callable) -> Callable:
     """ Decorator to store the history of inputs and outputs for a function """
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
-        input_key = method.__qualname__ + ":inputs"
-        output_key = method.__qualname__ + ":outputs"
-        self._redis.rpush(input_key, str(args))
-        output = method(self, *args, **kwargs)
-        self._redis.rpush(output_key, output)
+    def wrapper(self, *args, **kwds):
+        key = method.__qualname__
+        input_key = key + ":inputs"
+        output_key = key + ":outputs"
+        data = str(args)
+        self._redis.rpush(input_key, data)
+        output = method(self, *args, **kwds)
+        self._redis.rpush(output_key, str(output))
         return output
     return wrapper
 
 
-def replay(method: Callable):
+def replay(func: Callable):
     """ Display the history of calls of a particular function """
-    input_key = method.__qualname__ + ":inputs"
-    output_key = method.__qualname__ + ":outputs"
-    redis_instance = method.__self__._redis
-
-    call_count = redis_instance.get(method.__qualname__)
-    call_count = int(call_count) if call_count else 0
-    print(f"{method.__qualname__} was called {call_count} times: ")
-
-    inputs = redis_instance.lrange(input_key, 0, -1)
-    outputs = redis_instance.lrange(output_key, 0, -1)
-
-    for input_args, output in zip(inputs, outputs):
-        print(f"{method.__qualname__}(*{input_args.decode('utf-8')}) -> "
-              f"{output.decode('utf-8')}")
-
+    redis_instance = redis.Redis()
+    key = func.__qualname__
+    input_key = redis_instance.lrange("{}:inputs".format(key), 0, -1)
+    output_key = redis_instance.lrange("{}:outputs".format(key), 0, -1)
+    calls_number = len(key)
+    times_str = 'times'
+    if calls_number == 1:
+        times_str = 'time'
+    output = "{} was called {} {}:".format(key, calls_number, times_str)
+    print(output)
+    for input_data, output_data in zip(input_key, output_key):
+        output = "{}(*{}) -> {}".format(
+            key,
+            input_data('utf-8'),
+            output_data('utf-8')
+        )
+        print(output)
 
 
 class Cache():
