@@ -108,4 +108,3 @@ app.get('/reserve_product/:itemId', async (req, res) => {
 
   res.json(reservationConfirmed);
 });
-
