@@ -9,4 +9,3 @@ cli.on('error', (error) => {
 cli.on('connect', () => {
   console.log('Redis client connected to the server');
 });
-
