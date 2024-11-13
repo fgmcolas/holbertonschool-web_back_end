@@ -15,4 +15,3 @@ queue.process(queueKey, (job, done) => {
   sendNotification(phoneNumber, message);
   done();
 });
-
