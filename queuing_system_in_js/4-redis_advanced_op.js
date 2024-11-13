@@ -22,4 +22,3 @@ keys.forEach((key, index) => {
 cli.hgetall(KEYHASH, (err, value) => {
   console.log(value);
 });
-
