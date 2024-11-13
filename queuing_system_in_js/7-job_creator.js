@@ -67,4 +67,3 @@ jobs.forEach((jobObj) => {
     console.log(`Notification job ${job.id} ${progress}% complete`);
   });
 });
-
