@@ -23,4 +23,3 @@ function createPushNotificationsJobs(jobs, queue) {
 }
 
 export default createPushNotificationsJobs;
-
