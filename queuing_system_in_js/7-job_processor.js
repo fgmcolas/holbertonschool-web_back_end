@@ -25,4 +25,3 @@ queue.process(queueName, 2, (job, done) => {
   const { phoneNumber, message } = job.data;
   sendNotification(phoneNumber, message, job, done);
 });
-
