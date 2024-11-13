@@ -21,4 +21,3 @@ cliScr.on('message', (channel, message) => {
     cliScr.quit();
   }
 });
-
